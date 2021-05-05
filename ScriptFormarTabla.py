@@ -41,6 +41,18 @@ import pandas as pd
 # PTC: Partidos Totales en Casa
 # PTF: Partidos Totales Fuera
 # PT: Partidos Totales
+# RCPP: Remates en Casa Por Partido
+# RRCPP: Remates Recibidos en Casa Por Partido
+# RFPP: Remates Fuera Por Partido
+# RRFPP: Remates Recibidos Fuera Por Partido
+# RPP: Remates Por Partido
+# RRPP: Remates Recibidos Por Partido
+# RPCPP: Remates a Puerta en Casa Por Partido
+# RPRCPP: Remates a Puerta Recibidos en Casa Por Partido
+# RPFPP: Remates a Puerta Fuera Por Partido
+# RPRFPP: Remates a Puerta Recibidos Fuera Por Partido
+# RPPP: Remates a Puerta Por Partido
+# RRPPP: Remates Recibidos a Puerta Por Partido
 #
 # =============================================================================
 
@@ -57,18 +69,19 @@ seasons = pd.concat([season1516, season1617, season1718, season1819, season1819]
 #SEVILLA, SPORTING, VALENCIA, VALLADOLID, VILLARREAL (26 equipos)
 
 equipos = ['Alaves', 'Ath Bilbao', 'Ath Madrid', 'Barcelona', 'Betis', 'Celta', 'Eibar', 'Espanol', 'Getafe', 'Girona', 'Granada', 'Huesca', 'La Coruna', 'Las Palmas', 'Leganes', 'Levante', 'Malaga', 'Osasuna', 'Real Madrid', 'Sevilla', 'Sociedad', 'Sp Gijon', 'Valencia', 'Valladolid', 'Vallecano', 'Villarreal']
-teams["VC"]= 0
-teams["VF"]= 0
-teams["VT"]= 0
-teams["EC"]= 0
-teams["EF"]= 0
-teams["ET"]= 0
-teams["DC"]= 0
-teams["DF"]= 0
-teams["DT"]= 0
-teams["PTC"]= 0
-teams["PTF"]= 0
-teams["PT"]= 0
+teams["RCPP"]= 0
+teams["RRCPP"]= 0
+teams["RFPP"]= 0
+teams["RRFPP"]= 0
+teams["RPP"]= 0
+teams["RRPP"]= 0
+teams["RPCPP"]= 0
+teams["RPRCPP"]= 0
+teams["RPFPP"]= 0
+teams["RPRFPP"]= 0
+teams["RPPP"]= 0
+teams["RRPPP"]= 0
+
 
 #BUSCAR TODOS LOS PARTIDOS DE UN EQUIPO, SUMAR TODAS SUS ESTADÍSTICAS Y GUARDARLA EN EL DATASET CON LA SUMA TOTAL Y LA MEDIA
 i=0
@@ -99,6 +112,7 @@ for equipo in equipos:
 #     teams.loc[i, "GRFPP"] = GRF/(2*len(matchsAway_team))
 #     teams.loc[i, "GMTPP"] = GMT/(2*len(matchsAway_team))
 #     teams.loc[i, "GRTPP"] = GRT/(2*len(matchsAway_team))
+#
 # =============================================================================
 
 # =============================================================================
@@ -129,7 +143,40 @@ for equipo in equipos:
 #     teams.loc[i, "PTC"] = len(matchsHome_team)
 #     teams.loc[i, "PTF"] = len(matchsAway_team)
 #     teams.loc[i, "PT"] = len(matchsHome_team) + len(matchsAway_team)
+#
 # =============================================================================
+
+# =============================================================================
+#     ESTADÍSTICAS REMATES
+#
+#     RCPP = matchsHome_team['HS'].sum()
+#     RRCPP = matchsHome_team['AS'].sum()
+#     RFPP = matchsAway_team['AS'].sum()
+#     RRFPP = matchsAway_team['HS'].sum()
+#     RPP = RCPP + RFPP
+#     RRPP = RRCPP + RRFPP
+#     RPCPP = matchsHome_team['HST'].sum()
+#     RPRCPP = matchsHome_team['AST'].sum()
+#     RPFPP = matchsAway_team['AST'].sum()
+#     RPRFPP = matchsAway_team['HST'].sum()
+#     RPPP = RPCPP + RPFPP
+#     RRPPP = RPRCPP + RPRFPP
+#     
+#     teams.loc[i, "RCPP"] = RCPP/(len(matchsAway_team))
+#     teams.loc[i, "RRCPP"] = RRCPP/(len(matchsAway_team))
+#     teams.loc[i, "RFPP"] = RFPP/(len(matchsAway_team))
+#     teams.loc[i, "RRFPP"] = RRFPP/(len(matchsAway_team))
+#     teams.loc[i, "RPP"] = RPP/(2*len(matchsAway_team))
+#     teams.loc[i, "RRPP"] = RRPP/(2*len(matchsAway_team))
+#     teams.loc[i, "RPCPP"] = RPCPP/(len(matchsAway_team))
+#     teams.loc[i, "RPRCPP"] = RPRCPP/(len(matchsAway_team))
+#     teams.loc[i, "RPFPP"] = RPFPP/(len(matchsAway_team))
+#     teams.loc[i, "RPRFPP"] = RPRFPP/(len(matchsAway_team))
+#     teams.loc[i, "RPPP"] = RPPP/(2*len(matchsAway_team))
+#     teams.loc[i, "RRPPP"] = RRPPP/(2*len(matchsAway_team))
+#
+# =============================================================================
+    
     i=i+1
 
 teams.to_csv("teams_csv.csv", index = False)
