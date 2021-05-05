@@ -53,6 +53,12 @@ import pandas as pd
 # RPRFPP: Remates a Puerta Recibidos Fuera Por Partido
 # RPPP: Remates a Puerta Por Partido
 # RRPPP: Remates Recibidos a Puerta Por Partido
+# CCPP: Córners en Casa Por Partido
+# CRCPP: Córners Recibidos en Casa Por Partido
+# CFPP: Córners Fuera Por Partido
+# CRFPP: Córners Recibidos Fuera Por Partido
+# CPP: Córners Por Partido
+# CRPP: Córners Recibidos Por Partido
 #
 # =============================================================================
 
@@ -69,18 +75,12 @@ seasons = pd.concat([season1516, season1617, season1718, season1819, season1819]
 #SEVILLA, SPORTING, VALENCIA, VALLADOLID, VILLARREAL (26 equipos)
 
 equipos = ['Alaves', 'Ath Bilbao', 'Ath Madrid', 'Barcelona', 'Betis', 'Celta', 'Eibar', 'Espanol', 'Getafe', 'Girona', 'Granada', 'Huesca', 'La Coruna', 'Las Palmas', 'Leganes', 'Levante', 'Malaga', 'Osasuna', 'Real Madrid', 'Sevilla', 'Sociedad', 'Sp Gijon', 'Valencia', 'Valladolid', 'Vallecano', 'Villarreal']
-teams["RCPP"]= 0
-teams["RRCPP"]= 0
-teams["RFPP"]= 0
-teams["RRFPP"]= 0
-teams["RPP"]= 0
-teams["RRPP"]= 0
-teams["RPCPP"]= 0
-teams["RPRCPP"]= 0
-teams["RPFPP"]= 0
-teams["RPRFPP"]= 0
-teams["RPPP"]= 0
-teams["RRPPP"]= 0
+teams["CCPP"]= 0
+teams["CRCPP"]= 0
+teams["CFPP"]= 0
+teams["CRFPP"]= 0
+teams["CPP"]= 0
+teams["CRPP"]= 0
 
 
 #BUSCAR TODOS LOS PARTIDOS DE UN EQUIPO, SUMAR TODAS SUS ESTADÍSTICAS Y GUARDARLA EN EL DATASET CON LA SUMA TOTAL Y LA MEDIA
@@ -174,6 +174,25 @@ for equipo in equipos:
 #     teams.loc[i, "RPRFPP"] = RPRFPP/(len(matchsAway_team))
 #     teams.loc[i, "RPPP"] = RPPP/(2*len(matchsAway_team))
 #     teams.loc[i, "RRPPP"] = RRPPP/(2*len(matchsAway_team))
+#
+# =============================================================================
+
+# =============================================================================
+#     ESTADÍSTICAS CÓRNERS
+#
+#     CCPP = matchsHome_team['HC'].sum()
+#     CRCPP = matchsHome_team['AC'].sum()
+#     CFPP = matchsAway_team['AC'].sum()
+#     CRFPP = matchsAway_team['HC'].sum()
+#     CPP = CCPP + CFPP
+#     CRPP = CRCPP + CRFPP
+#     
+#     teams.loc[i, "CCPP"] = CCPP/(len(matchsAway_team))
+#     teams.loc[i, "CRCPP"] = CRCPP/(len(matchsAway_team))
+#     teams.loc[i, "CFPP"] = CFPP/(len(matchsAway_team))
+#     teams.loc[i, "CRFPP"] = CRFPP/(len(matchsAway_team))
+#     teams.loc[i, "CPP"] = CPP/(2*len(matchsAway_team))
+#     teams.loc[i, "CRPP"] = CRPP/(2*len(matchsAway_team))
 #
 # =============================================================================
     
