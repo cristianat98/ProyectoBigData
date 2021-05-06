@@ -8,6 +8,15 @@ import pandas as pd
 # =============================================================================
 
 # =============================================================================
+# CREACIÓN DEL DATASET DE LOS PARTIDOS
+#
+# matches = pd.DataFrame()
+# matches["HomeTeam"] = partidos["HomeTeam"]
+# matches["AwayTeam"] = partidos["AwayTeam"]
+#
+# =============================================================================
+
+# =============================================================================
 # CREAR COLUMNAS
 #
 # teams["GMC"]= 0
@@ -68,20 +77,15 @@ season1617 = pd.read_csv("season-1617_csv.csv")
 season1718 = pd.read_csv("season-1718_csv.csv")
 season1819 = pd.read_csv("season-1819_csv.csv")
 teams = pd.read_csv("teams_csv.csv")
+matches = pd.read_csv("matches_csv.csv")
 seasons = pd.concat([season1516, season1617, season1718, season1819, season1819])
+partidos = pd.concat([season1516, season1617, season1718, season1819])
 
 #EQUIPOS: ALAVÉS, ATH BILBAO, ATL MADRID, BARCELONA, BETIS, CELTA, DEPORTIVO, EIBAR, ESPAÑOL, 
 #GETAFE, GIRONA, GRANADA, HUESCA, LAS PALMAS, LEGANÉS, LEVANTE, MÁLAGA, OSASUNA, VALLECANO, MADRID, REAL SOCIEDAD, 
 #SEVILLA, SPORTING, VALENCIA, VALLADOLID, VILLARREAL (26 equipos)
 
 equipos = ['Alaves', 'Ath Bilbao', 'Ath Madrid', 'Barcelona', 'Betis', 'Celta', 'Eibar', 'Espanol', 'Getafe', 'Girona', 'Granada', 'Huesca', 'La Coruna', 'Las Palmas', 'Leganes', 'Levante', 'Malaga', 'Osasuna', 'Real Madrid', 'Sevilla', 'Sociedad', 'Sp Gijon', 'Valencia', 'Valladolid', 'Vallecano', 'Villarreal']
-teams["CCPP"]= 0
-teams["CRCPP"]= 0
-teams["CFPP"]= 0
-teams["CRFPP"]= 0
-teams["CPP"]= 0
-teams["CRPP"]= 0
-
 
 #BUSCAR TODOS LOS PARTIDOS DE UN EQUIPO, SUMAR TODAS SUS ESTADÍSTICAS Y GUARDARLA EN EL DATASET CON LA SUMA TOTAL Y LA MEDIA
 i=0
@@ -199,3 +203,4 @@ for equipo in equipos:
     i=i+1
 
 teams.to_csv("teams_csv.csv", index = False)
+matches.to_csv("matches_csv.csv", index = False)
