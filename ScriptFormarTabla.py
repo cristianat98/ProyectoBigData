@@ -13,6 +13,8 @@ import pandas as pd
 # matches = pd.DataFrame()
 # matches["HomeTeam"] = partidos["HomeTeam"]
 # matches["AwayTeam"] = partidos["AwayTeam"]
+# matches["Resultado"] = partidos["FTR"]
+# matches["indice"]= matches.index
 #
 # =============================================================================
 
@@ -20,6 +22,8 @@ import pandas as pd
 # CREAR COLUMNAS
 #
 # teams["GMC"]= 0
+# teams["GRC"]= 0
+# ...
 #
 # =============================================================================
 
@@ -78,14 +82,22 @@ season1718 = pd.read_csv("season-1718_csv.csv")
 season1819 = pd.read_csv("season-1819_csv.csv")
 teams = pd.read_csv("teams_csv.csv")
 matches = pd.read_csv("matches_csv.csv")
-seasons = pd.concat([season1516, season1617, season1718, season1819, season1819])
-partidos = pd.concat([season1516, season1617, season1718, season1819])
+seasons = pd.concat([season1516, season1617, season1718, season1819, season1819], ignore_index=True)
+partidos = pd.concat([season1516, season1617, season1718, season1819], ignore_index=True)
 
 #EQUIPOS: ALAVÉS, ATH BILBAO, ATL MADRID, BARCELONA, BETIS, CELTA, DEPORTIVO, EIBAR, ESPAÑOL, 
 #GETAFE, GIRONA, GRANADA, HUESCA, LAS PALMAS, LEGANÉS, LEVANTE, MÁLAGA, OSASUNA, VALLECANO, MADRID, REAL SOCIEDAD, 
 #SEVILLA, SPORTING, VALENCIA, VALLADOLID, VILLARREAL (26 equipos)
 
 equipos = ['Alaves', 'Ath Bilbao', 'Ath Madrid', 'Barcelona', 'Betis', 'Celta', 'Eibar', 'Espanol', 'Getafe', 'Girona', 'Granada', 'Huesca', 'La Coruna', 'Las Palmas', 'Leganes', 'Levante', 'Malaga', 'Osasuna', 'Real Madrid', 'Sevilla', 'Sociedad', 'Sp Gijon', 'Valencia', 'Valladolid', 'Vallecano', 'Villarreal']
+
+#CONCATENAR LOS DATASETS DE ESTADÍSTICAS Y PARTIDOS
+matches = pd.merge(matches, teams, left_on="HomeTeam", right_on="Equipos", left_index=True)
+matches = pd.merge(matches, teams, left_on="AwayTeam", right_on="Equipos", suffixes=('L', 'V'), left_index=True)
+matches = matches.set_index(matches["indice"])
+matches = matches.sort_index()
+matches = matches.drop(columns=["EquiposL", "EquiposV"])
+matches = matches.drop(columns=["indice"])
 
 #BUSCAR TODOS LOS PARTIDOS DE UN EQUIPO, SUMAR TODAS SUS ESTADÍSTICAS Y GUARDARLA EN EL DATASET CON LA SUMA TOTAL Y LA MEDIA
 i=0
