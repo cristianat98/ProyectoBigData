@@ -15,15 +15,28 @@ from sklearn.model_selection import cross_val_score
 from sklearn.metrics import classification_report
 from sklearn.ensemble import BaggingClassifier
 
+
 #Importación de datasets
 
 teams = pd.read_csv("teams_csv.csv")
 matches = pd.read_csv("matches_csv.csv")
 
-#=========================================================================
+matches['Resultado'] = matches['Resultado'].astype('category')
+matches['Resultado'] = matches['Resultado'].cat.codes
 
-#Separación de los datos para el entrenamiento
-#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+
+X = matches.drop(['HomeTeam','AwayTeam','Resultado'],axis=1)
+y = matches['Resultado']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
+
+knn_model = KNeighborsClassifier(metric='minkowski', n_neighbors=5)
+knn_model.fit(X_train, y_train)
+
+# test prediction
+y_pred = knn_model.predict(X_test)
+print('Misclassified samples: %d' % (y_test != y_pred).sum())
+print('Accuracy: %.2f%%' % (100.0 * knn_model.score(X_test, y_test)))
 
 
 #Inicialización de clasificadores para comparar
