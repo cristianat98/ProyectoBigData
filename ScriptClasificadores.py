@@ -55,12 +55,11 @@ classifiers = [
 
 #==============================================================================================================================
 
-#Cross-validation y muestra de resultados 
+#Prueba de los diferentes clasificadores y muestra de resultados 
 
 accuracy = dict()
 for name, clf in zip(names, classifiers):
     #   One metric: score (accuracy)
-    #   Perform 10-fold cross-validation
     clf.fit(X_train, y_train)
     score = clf.score(X_test, y_test)
     accuracy[name] = score.mean()
