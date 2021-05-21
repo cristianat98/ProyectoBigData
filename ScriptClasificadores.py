@@ -12,9 +12,14 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import cross_val_score
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.ensemble import BaggingClassifier
-
+from joblib import dump, load
+import numpy as np
+import pandas as pd
+import seaborn as sns
+from imblearn.over_sampling import RandomOverSampler
+import matplotlib.pyplot as plt
 
 #Importación de datasets
 
@@ -22,14 +27,23 @@ teams = pd.read_csv("teams_csv.csv")
 matches = pd.read_csv("matches_csv.csv")
 
 matches['Resultado'] = matches['Resultado'].astype('category')
+print(matches['Resultado'].value_counts())
 matches['Resultado'] = matches['Resultado'].cat.codes
+print(matches['Resultado'].value_counts())
 
 
 X = matches.drop(['HomeTeam','AwayTeam','Resultado'],axis=1)
 y = matches['Resultado']
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=1, stratify=y)
 
+sm = RandomOverSampler(sampling_strategy='not majority', random_state = 33)
+X_resampled, y_resampled = sm.fit_resample(X, y)
+print(len(X_resampled), len(y_resampled))
+
+print('Class labels:', np.unique(y_resampled))
+print('Labels counts in y_resampled:', np.bincount(y_resampled))
+
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.3, random_state=1, stratify=y_resampled)
 #knn_model = KNeighborsClassifier(metric='minkowski', n_neighbors=5)
 #knn_model.fit(X_train, y_train)
 
@@ -42,16 +56,22 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 #===============================================================================================================================
 
 #Inicialización de clasificadores para comparar
-names = ["KNN5", "KNN10", "Decision Tree 8", "Decision Tree 16", "GNB", "SVC Linear", "SVC Polynomial", "Neural Net"]
+names = ["KNN5", "KNN7","KNN9","KNN11","KNN13","KNN17","KNN84","Decision Tree 4", "Decision Tree 8", "Decision Tree 16","GNB"]
 classifiers = [
     KNeighborsClassifier(metric='minkowski', n_neighbors=5),
-    KNeighborsClassifier(metric='minkowski', n_neighbors=10),
+    KNeighborsClassifier(metric='minkowski', n_neighbors=7),
+    KNeighborsClassifier(metric='minkowski', n_neighbors=9),
+    KNeighborsClassifier(metric='minkowski', n_neighbors=11),
+    KNeighborsClassifier(metric='minkowski', n_neighbors=13),
+    KNeighborsClassifier(metric='minkowski', n_neighbors=17),
+    KNeighborsClassifier(metric='minkowski', n_neighbors=84),
+    DecisionTreeClassifier(criterion='entropy', max_depth=4, random_state=1),
     DecisionTreeClassifier(criterion='entropy', max_depth=8, random_state=1),
     DecisionTreeClassifier(criterion='entropy', max_depth=16, random_state=1),
-    GaussianNB(),
-    SVC(kernel="linear"),
-    SVC(kernel="poly", gamma=0.20, C=1.0),
-    MLPClassifier(alpha=1, max_iter=1000)]
+    GaussianNB()]
+   #SVC(kernel="linear") ]
+#Añadir clasificador arriba si se descomenta!!!
+#No hemos comparado mas clasificadores porque no computa comentar en informe
 
 #==============================================================================================================================
 
@@ -65,3 +85,24 @@ for name, clf in zip(names, classifiers):
     accuracy[name] = score.mean()
     print(name)
     print(" Accuracy: %0.4f " % score.mean())
+    
+clf = KNeighborsClassifier(metric='minkowski', n_neighbors=5) 
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+cm=confusion_matrix(y_test, y_pred)
+print(confusion_matrix(y_test, y_pred))
+cm=confusion_matrix(y_test, y_pred)
+fig= plt.figure()
+ax=fig.add_subplot(111)
+cax=ax.matshow(cm)
+plt.title('Confusion matrix')
+fig.colorbar(cax)
+labels=['victoriaL','victoriaV','empate']
+ax.set_xticklabels([''] + labels)
+ax.set_yticklabels([''] + labels)
+plt.xlabel('Predicted')
+plt.ylabel('True')
+plt.show()
+
+
+dump(clf, 'Classificator.joblib') 
