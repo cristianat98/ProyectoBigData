@@ -1,5 +1,3 @@
-import pandas as pd
-
 # =============================================================================
 # CREACIÓN DEL DATASET EQUIPOS
 #
@@ -75,6 +73,9 @@ import pandas as pd
 #
 # =============================================================================
 
+import pandas as pd
+
+
 #Importar Tablas de Datos
 season1516 = pd.read_csv("season-1516_csv.csv")
 season1617 = pd.read_csv("season-1617_csv.csv")
@@ -84,6 +85,18 @@ teams = pd.read_csv("teams_csv.csv")
 matches = pd.read_csv("matches_csv.csv")
 seasons = pd.concat([season1516, season1617, season1718, season1819, season1819], ignore_index=True)
 partidos = pd.concat([season1516, season1617, season1718, season1819], ignore_index=True)
+
+#Datos Para Resultados
+print("Cuota media Victoria Local: %0.2f " % partidos['B365H'].mean())
+print(partidos['B365H'].sort_values(ascending=False))
+print("Cuota media Empate: %0.2f " % partidos['B365D'].mean())
+print(partidos['B365D'].sort_values(ascending=False))
+print("Cuota media Victoria Visitante: %0.2f " % partidos['B365A'].mean())
+print(partidos['B365A'].sort_values(ascending=False))
+print("Cuota media -2.5 Goles: %0.2f " % partidos['BbAv<2.5'].mean())
+print(partidos['BbAv<2.5'].sort_values(ascending=False))
+print("Cuota media +2.5 Goles: %0.2f " % partidos['BbAv>2.5'].mean())
+print(partidos['BbAv>2.5'].sort_values(ascending=False))
 
 #EQUIPOS: ALAVÉS, ATH BILBAO, ATL MADRID, BARCELONA, BETIS, CELTA, DEPORTIVO, EIBAR, ESPAÑOL, 
 #GETAFE, GIRONA, GRANADA, HUESCA, LAS PALMAS, LEGANÉS, LEVANTE, MÁLAGA, OSASUNA, VALLECANO, MADRID, REAL SOCIEDAD, 
@@ -99,6 +112,19 @@ matches = matches.sort_index()
 matches = matches.drop(columns=["EquiposL", "EquiposV"])
 matches = matches.drop(columns=["indice"])
 
+
+#Incluir la columna + 2,5 Goles (Apuesta clásica en Casas de Apuestas)
+matches["+ 2.5 Goles"]=""
+i = 0
+while i<len(matches):
+    golestotales=partidos.loc[i,"FTHG"]+partidos.loc[i,"FTAG"]
+    if golestotales>2:
+        matches.loc[i,"+ 2.5 Goles"] = "SÍ"
+    else:
+        matches.loc[i,"+ 2.5 Goles"] = "NO"
+    i=i+1
+    
+    
 #BUSCAR TODOS LOS PARTIDOS DE UN EQUIPO, SUMAR TODAS SUS ESTADÍSTICAS Y GUARDARLA EN EL DATASET CON LA SUMA TOTAL Y LA MEDIA
 i=0
 for equipo in equipos:
