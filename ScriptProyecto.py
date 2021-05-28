@@ -33,20 +33,29 @@ partido = estadisticasLocal.merge(estadisticasVisitante, left_on='indice', right
 partido = partido.drop(columns=["EquiposL", "EquiposV", "indice"])
 y_predResultado = clfResultados.predict(partido)
 y_predGoles = clfGoles.predict(partido)
+y_probResultados = clfResultados.predict_proba(partido)
+y_probGoles = clfGoles.predict_proba(partido)
 
-#print(y_pred)
+print("Probabilidad victoria equipo local: %0.2f" % (y_probResultados[0, 2]*100), "%")
+print("Probabilidad empate: %0.2f " % (y_probResultados[0, 1]*100), "%")
+print("Probabilidad victoria equipo visitante: %0.2f " % (y_probResultados[0, 0]*100), "%")
+print("Predicción Programa:")
 
 if y_predResultado == 0:
     print("Ganará el equipo visitante")
     
 elif y_predResultado == 1:
     print("Quedarán empate")
-    
+     
 else:
     print("Ganará el equipo local")
-    
+
+print("")
+print("Probabilidad -2.5 Goles: %0.2f" % (y_probGoles[0,0]*100), "%")
+print("Probabilidad +2.5 Goles: %0.2f" % (y_probGoles[0,1]*100), "%")
+print("Predicción Programa:")
 if y_predGoles == 0:
     print("No llegarán a 2.5 Goles")
-    
+     
 else:
     print("Llegarán a 2.5 Goles")
