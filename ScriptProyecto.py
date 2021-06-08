@@ -14,6 +14,7 @@ warnings.filterwarnings('ignore')
 teams = pd.read_csv("teams_csv.csv")
 clfResultados = load('ClassificatorResultados.joblib') 
 clfGoles = load('ClassificatorGoles.joblib') 
+
 #EQUIPOS: Alaves, Ath Bilbao, Ath Madrid, Barcelona, Betis, Celta,  Eibar, Espanol, 
 #Getafe, Girona, Granada, Huesca, La Coruna, Las Palmas, Leganes, Levante, Malaga, Osasuna, Real Madrid 
 #Sevilla, Sociedad, Sp Gijon, Valencia, Valladolid, Vallecano, Villarreal (26 equipos)
@@ -36,6 +37,7 @@ y_predGoles = clfGoles.predict(partido)
 y_probResultados = clfResultados.predict_proba(partido)
 y_probGoles = clfGoles.predict_proba(partido)
 
+print("")
 print("Probabilidad victoria equipo local: %0.2f" % (y_probResultados[0, 2]*100), "%")
 print("Probabilidad empate: %0.2f " % (y_probResultados[0, 1]*100), "%")
 print("Probabilidad victoria equipo visitante: %0.2f " % (y_probResultados[0, 0]*100), "%")

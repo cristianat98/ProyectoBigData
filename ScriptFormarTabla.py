@@ -1,22 +1,4 @@
 # =============================================================================
-# CREACIÓN DEL DATASET EQUIPOS
-#
-# teams = pd.DataFrame(equipos, columns=['Equipos'])
-#
-# =============================================================================
-
-# =============================================================================
-# CREACIÓN DEL DATASET DE LOS PARTIDOS
-#
-# matches = pd.DataFrame()
-# matches["HomeTeam"] = partidos["HomeTeam"]
-# matches["AwayTeam"] = partidos["AwayTeam"]
-# matches["Resultado"] = partidos["FTR"]
-# matches["indice"]= matches.index
-#
-# =============================================================================
-
-# =============================================================================
 # CREAR COLUMNAS
 #
 # teams["GMC"]= 0
@@ -104,14 +86,29 @@ print(partidos['BbAv>2.5'].sort_values(ascending=False))
 
 equipos = ['Alaves', 'Ath Bilbao', 'Ath Madrid', 'Barcelona', 'Betis', 'Celta', 'Eibar', 'Espanol', 'Getafe', 'Girona', 'Granada', 'Huesca', 'La Coruna', 'Las Palmas', 'Leganes', 'Levante', 'Malaga', 'Osasuna', 'Real Madrid', 'Sevilla', 'Sociedad', 'Sp Gijon', 'Valencia', 'Valladolid', 'Vallecano', 'Villarreal']
 
-#CONCATENAR LOS DATASETS DE ESTADÍSTICAS Y PARTIDOS
-matches = pd.merge(matches, teams, left_on="HomeTeam", right_on="Equipos", left_index=True)
-matches = pd.merge(matches, teams, left_on="AwayTeam", right_on="Equipos", suffixes=('L', 'V'), left_index=True)
-matches = matches.set_index(matches["indice"])
-matches = matches.sort_index()
-matches = matches.drop(columns=["EquiposL", "EquiposV"])
-matches = matches.drop(columns=["indice"])
+# =============================================================================
+# CREACIÓN DEL DATASET EQUIPOS
+#
+# teams = pd.DataFrame(equipos, columns=['Equipos'])
+#
+# =============================================================================
 
+# =============================================================================
+#CONCATENAR LOS DATASETS DE ESTADÍSTICAS Y PARTIDOS
+#
+# matches = pd.DataFrame()
+# matches["HomeTeam"] = partidos["HomeTeam"]
+# matches["AwayTeam"] = partidos["AwayTeam"]
+# matches["Resultado"] = partidos["FTR"]
+# matches["indice"]= matches.index
+# matches = pd.merge(matches, teams, left_on="HomeTeam", right_on="Equipos", left_index=True)
+# matches = pd.merge(matches, teams, left_on="AwayTeam", right_on="Equipos", suffixes=('L', 'V'), left_index=True)
+# matches = matches.set_index(matches["indice"])
+# matches = matches.sort_index()
+# matches = matches.drop(columns=["EquiposL", "EquiposV"])
+# matches = matches.drop(columns=["indice"])
+#
+# =============================================================================
 
 #Incluir la columna + 2,5 Goles (Apuesta clásica en Casas de Apuestas)
 matches["+ 2.5 Goles"]=""
